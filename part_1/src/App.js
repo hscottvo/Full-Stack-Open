@@ -1,27 +1,36 @@
-const Hello = ({ age, name }) => {
-  // const { age, name } = props
-  const bornYear = () => {
-    return new Date().getFullYear() - age;
-  }
+import { useState } from 'react'
+
+const CountDisplay = ({ counter }) => {
+  console.log("Rerendering display")
+  return <div>{counter}</div>
+}
+
+const Button = ({ buttonFunction, text }) => {
+  console.log("Rerendering button")
   return (
-    <div>
-      <p>
-        Hello {name}, you are {age} years old, born in {bornYear()}
-      </p>
-    </div>
-  )
+    <button onClick={buttonFunction}>
+      {text}
+    </button>);
 }
 
 const App = () => {
-  const name = 'Peter'
-  const age = 10
+
+  const [counter, setCounter] = useState(0)
+  console.log("Rerendering app")
+
+  const incrementCounter = () => setCounter(counter + 1)
+  const resetCounter = () => setCounter(0)
+  const decrementCounter = () => setCounter(counter - 1)
+
 
   return (
-    <div>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={name} age={age} />
-    </div>
+    <>
+      <CountDisplay counter={counter} />
+      <Button buttonFunction={incrementCounter} text={"inc"} />
+      <Button buttonFunction={resetCounter} text={"reset"} />
+      <Button buttonFunction={decrementCounter} text={"dec"} />
+    </>
   )
 }
-export default App;
+
+export default App
