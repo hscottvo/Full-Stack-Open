@@ -81,11 +81,7 @@ const PersonForm = ({
   );
 };
 
-const Persons = ({ people, filter, messageHandler }) => {
-  const [peopleList, setPeopleList] = useState([]);
-  useEffect(() => {
-    setPeopleList(people);
-  }, [people]);
+const Persons = ({ people, setPeople, filter, messageHandler }) => {
   const handleDeletePerson = (id, name) => {
     const deleteResponse = PhonebookService.deleteNumber(
       id,
@@ -93,13 +89,13 @@ const Persons = ({ people, filter, messageHandler }) => {
       messageHandler,
     );
     deleteResponse.then((response) => {
-      setPeopleList(peopleList.filter((obj) => obj.id !== id));
+      setPeople(people.filter((obj) => obj.id !== id));
     });
   };
 
   return (
     <>
-      {peopleList
+      {people
         .filter((person) =>
           person.name.toLowerCase().includes(filter.toLowerCase()),
         )
@@ -317,6 +313,7 @@ const PhonebookAxios = () => {
       <h3>Numbers</h3>
       <Persons
         people={persons}
+        setPeople={setPersons}
         filter={filter}
         messageHandler={messageHandler}
       />

@@ -1,5 +1,6 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/api/persons";
+// const baseUrl = "http://localhost:3001/api/persons";
+const baseUrl = "/api/persons";
 
 const getAll = () => {
   return axios
@@ -7,7 +8,7 @@ const getAll = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.log(error);
-      alert(`Unable to read numbers from ${baseUrl}`);
+      alert(`Unable to read numbers from ${baseUrl}: ${error}`);
     });
 };
 
