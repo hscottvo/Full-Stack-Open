@@ -7,7 +7,7 @@ import {
 import Countries from "./components/Countries";
 
 const App = () => {
-  let render = "PhonebookAxios";
+  let render = "phonebook_axios";
   switch (render) {
     case "notes":
       return <Notes />;
