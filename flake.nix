@@ -16,7 +16,6 @@
           };
         };
         devPackages = with pkgs; [
-          # bruno
           hoppscotch
           nginx
           nodejs
@@ -24,17 +23,10 @@
           yarn
           zsh
         ];
-        # postman = pkgs.postman;
       in
       {
         devShell = pkgs.mkShell {
           buildInputs = devPackages;
-          # buildInputs = [
-          #   nodejs
-          #   yarn
-          #   zsh
-          #   # postman
-          # ];
 
           shellHook = ''
             echo "Welcome to the React dev shell!"
