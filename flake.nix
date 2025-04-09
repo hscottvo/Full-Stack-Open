@@ -19,7 +19,6 @@
           hoppscotch
           nginx
           nodejs
-          postman
           yarn
           zsh
         ];
