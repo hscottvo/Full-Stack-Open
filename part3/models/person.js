@@ -5,7 +5,6 @@ mongoose.set("strictQuery", false)
 
 const url = process.env.MONGODB_URI
 
-console.log("connecting to", url)
 mongoose.connect(url)
     .then(_result => {
         console.log("Connected to MongoDB")
@@ -28,6 +27,3 @@ personSchema.set("toJSON", {
 
 
 export const Person = mongoose.model("Person", personSchema)
-
-// export default { Person }
-
