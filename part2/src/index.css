@@ -68,14 +68,14 @@ button:focus-visible {
 }
 
 h1 {
-    color: green;
-    font-style: italic;
+  color: green;
+  font-style: italic;
 }
 
 .note {
-    color: grey;
-    padding-top: 5px;
-    font-size: 15px;
+  color: grey;
+  padding-top: 5px;
+  font-size: 15px;
 }
 
 .added {
@@ -88,7 +88,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-.alreadyDeleted {
+.error {
   color: red;
   background: lightgrey;
   font-size: 20px;
