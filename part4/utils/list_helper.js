@@ -34,8 +34,27 @@ const mostBlogs = (blogList) => {
     }
 
     const counts = _.countBy(blogList, object => object.author)
-    const mostBlogsAuthor = _.maxBy(Object.keys(counts), o => counts[o])
+    const mostBlogsAuthor = _.maxBy(Object.keys(counts), key => counts[key])
     return { author: mostBlogsAuthor, blogs: counts[mostBlogsAuthor] }
 }
 
-export default { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = (blogList) => {
+    if (blogList.length === 0) {
+        return undefined
+    }
+
+
+    const group = _.groupBy(blogList, obj => obj.author)
+
+    const counts = _.reduce(group, (res, val, key) => {
+        res[key] = _.reduce(val, (sum, blog) => {
+            return sum + blog.likes
+        }, 0)
+        return res
+    }, {})
+
+    const mostLikesAuthor = _.maxBy(Object.keys(counts), key => counts[key])
+    return { author: mostLikesAuthor, likes: counts[mostLikesAuthor] }
+}
+
+export default { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
