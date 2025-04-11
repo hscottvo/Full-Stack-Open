@@ -10,57 +10,39 @@ blogsRouter.get("/", (_, res) => {
         })
 })
 
-blogsRouter.get("/:id", (req, res, next) => {
-    Blog.findById(req.params.id)
-        .then(blog => {
-            if (blog) {
-                res.json(blog)
-            }
-            else {
-                res.status(404).end()
-            }
-        })
-        .catch(error => next(error))
+blogsRouter.get("/:id", async (req, res) => {
+    const blog = await Blog.findById(req.params.id)
+    if (blog) {
+        res.json(blog)
+    }
+    else {
+        res.status(404).end()
+    }
 })
 
-blogsRouter.post("/", (req, res, next) => {
+blogsRouter.post("/", async (req, res) => {
     const blog = new Blog(req.body)
 
-    blog.save()
-        .then(savedResult => {
-            res.json(savedResult)
-        })
-        .catch(error => next(error))
+    const savedBlog = await blog.save()
+    res.status(201).json(savedBlog)
 })
 
-blogsRouter.delete("/:id", (req, res) => {
-    Blog.findByIdAndDelete(req.params.id)
-        .then(() => {
-            res.status(204).end()
-        })
-        .catch(error => console.log(error))
+blogsRouter.delete("/:id", async (req, res) => {
+    await Blog.findByIdAndDelete(req.params.id)
+    res.status(204).end()
 })
 
-blogsRouter.put("/:id", (req, res, next) => {
+blogsRouter.put("/:id", async (req, res) => {
     const { title, author, url, likes } = req.body
-    Blog.findById(req.params.id)
-        .then(blog => {
-            if (!blog) {
-                res.status(404).end()
-            }
+    const blog = await Blog.findById(req.params.id)
+    if (!blog) {
+        res.status(404).end()
+    }
 
-            blog.title = title
-            blog.author = author
-            blog.url = url
-            blog.likes = likes
-
-            return blog
-                .save()
-                .then(updatedBlog => {
-                    res.json(updatedBlog)
-                })
-                .catch(error => next(error))
-        })
+    blog.title = title
+    blog.author = author
+    blog.url = url
+    blog.likes = likes
 })
 
 export default blogsRouter

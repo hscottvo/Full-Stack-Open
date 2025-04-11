@@ -4,26 +4,22 @@ const personsRouter = Router()
 
 import { Person } from "../models/person.js"
 
-personsRouter.get("/", (response) => {
-    Person.find({}).then(persons => {
-        response.json(persons)
-    })
+personsRouter.get("/", async (_, response) => {
+    const persons = await Person.find({})
+    response.json(persons)
 })
 
-personsRouter.get("/:id", (request, response, next) => {
-    Person.findById(request.params.id)
-        .then(person => {
-            if (person) {
-                response.json(person)
-            }
-            else {
-                response.status(404).end()
-            }
-        })
-        .catch(error => next(error))
+personsRouter.get("/:id", async (request, response) => {
+    const person = await Person.findById(request.params.id)
+    if (person) {
+        response.json(person)
+    }
+    else {
+        response.status(404).end()
+    }
 })
 
-personsRouter.post("/", (request, response, next) => {
+personsRouter.post("/", async (request, response) => {
     const { name, number } = request.body
 
     const person = new Person({
@@ -31,19 +27,13 @@ personsRouter.post("/", (request, response, next) => {
         number: number
     })
 
-    person.save()
-        .then(savedPerson => {
-            response.json(savedPerson)
-        })
-        .catch(error => next(error))
+    const savedPerson = await person.save()
+    response.status(201).json(savedPerson)
 })
 
-personsRouter.delete("/:id", (request, response, next) => {
-    Person.findByIdAndDelete(request.params.id)
-        .then(() => {
-            response.status(204).end()
-        })
-        .catch(error => next(error))
+personsRouter.delete("/:id", async (request, response) => {
+    await Person.findByIdAndDelete(request.params.id)
+    response.status(204).end()
 })
 
 personsRouter.put("/:id", (request, response, next) => {
