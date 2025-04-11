@@ -2,8 +2,9 @@
   "name": "packend",
   "version": "0.0.1",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "dev": "node index.js",
     "exercise": "node --watch exercise.js",
     "lecture": "node --watch lecture.js",
     "test": "echo \"Error: no test specified\" && exit 1",

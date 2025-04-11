@@ -1,17 +1,5 @@
 import mongoose from "mongoose"
-import dotenv from "dotenv"
-dotenv.config()
-mongoose.set("strictQuery", false)
 
-const url = process.env.MONGODB_URI
-
-mongoose.connect(url)
-    .then(() => {
-        console.log("Connected to MongoDB")
-    })
-    .catch(error => {
-        console.log("error connecting to MongoDB:", error.message)
-    })
 
 const personSchema = new mongoose.Schema({
     name: {
@@ -26,6 +14,7 @@ const personSchema = new mongoose.Schema({
         validate: [/\d{2,3}-\d+/, "2-3 digits, followed by a hyphen, then 5 or more digits"]
     }
 })
+
 personSchema.set("toJSON", {
     transform: (_document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
