@@ -20,6 +20,7 @@ const listWithOneBlog = [
         __v: 0
     }
 ]
+
 const listWithFourBlogs = [
     {
         _id: '5a422aa71b54a676234d17f8',
@@ -40,7 +41,7 @@ const listWithFourBlogs = [
     {
         _id: '5a422aa71b54a676234d17f8',
         title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
+        author: 'me',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 5,
         __v: 0
@@ -48,7 +49,7 @@ const listWithFourBlogs = [
     {
         _id: 'ietrsnietnrsietr',
         title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
+        author: 'you',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 11,
         __v: 0
@@ -90,4 +91,23 @@ describe("favorite blog", () => {
         const result = listHelper.favoriteBlog(listWithFourBlogs)
         assert.deepStrictEqual(result, listWithFourBlogs[1])
     })
+})
+
+describe("most blogs", () => {
+
+    test("when list is empty, return undefined", () => {
+        const result = listHelper.mostBlogs(emptyList)
+        assert.deepStrictEqual(result, undefined)
+    })
+
+    test("when list has only one blog, equals that blog's blogger", () => {
+        const result = listHelper.mostBlogs(listWithOneBlog)
+        assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", blogs: 1 })
+    })
+
+    test("when list has multiple blogs, equals any of the top-bloggers", () => {
+        const result = listHelper.mostBlogs(listWithFourBlogs)
+        assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", blogs: 2 })
+    })
+
 })

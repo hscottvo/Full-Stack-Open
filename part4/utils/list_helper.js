@@ -1,3 +1,4 @@
+import _ from "lodash"
 const dummy = () => {
     return 1
 }
@@ -27,4 +28,14 @@ const favoriteBlog = (blogList) => {
     return blogList.reduce(reducer, undefined)
 }
 
-export default { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogList) => {
+    if (blogList.length === 0) {
+        return undefined
+    }
+
+    const counts = _.countBy(blogList, object => object.author)
+    const mostBlogsAuthor = _.maxBy(Object.keys(counts), o => counts[o])
+    return { author: mostBlogsAuthor, blogs: counts[mostBlogsAuthor] }
+}
+
+export default { dummy, totalLikes, favoriteBlog, mostBlogs }
