@@ -19,6 +19,7 @@
           hoppscotch
           nginx
           nodejs
+          vscode-langservers-extracted
           yarn
           zsh
         ];

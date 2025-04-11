@@ -8,7 +8,7 @@ import { Person } from "./models/person.js"
 dotenv.config()
 const app = express()
 
-morgan.token("person", function (req, _) {
+morgan.token("person", function (req) {
     if (req.method === "POST") {
         return JSON.stringify(req.body)
     }
@@ -32,7 +32,7 @@ app.use(requestLogger)
 //     ),
 // )
 
-const errorHandler = (error, request, response, next) => {
+const errorHandler = (error, response, next) => {
     console.error(error.message)
 
     if (error.name === "CastError") {
@@ -43,12 +43,12 @@ const errorHandler = (error, request, response, next) => {
     next(error)
 }
 
-const unknownEndpoint = (error, request, response, next) => {
-    response.status(404).send({ error: "Endpoint not found" })
-    next(error)
-}
+// const unknownEndpoint = (error, request, response, next) => {
+//     response.status(404).send({ error: "Endpoint not found" })
+//     next(error)
+// }
 
-app.get("/info", (_, response) => {
+app.get("/info", (_, response, next) => {
     Person.find({})
         .then(result => {
             console.log(result)
@@ -130,9 +130,9 @@ app.put("/api/persons/:id", (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.delete("/api/persons/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response, next) => {
     Person.findByIdAndDelete(request.params.id)
-        .then(result => {
+        .then(() => {
             response.status(204).end()
         })
         .catch(error => next(error))

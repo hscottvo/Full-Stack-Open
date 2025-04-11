@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import { set, connect, Schema, model, connection } from "mongoose";
 
 if (process.argv.length < 3) {
     console.log("Give password as an argument");
@@ -7,15 +7,15 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2];
 const url = `mongodb+srv://hscottvocodes:${password}@cluster0.mnokkoo.mongodb.net/personApp?retryWrites=true&w=majority&appName=Cluster0`;
-mongoose.set("strictQuery", false);
-mongoose.connect(url);
+set("strictQuery", false);
+connect(url);
 
-const personSchema = new mongoose.Schema({
+const personSchema = new Schema({
     name: String,
     number: String,
 });
 
-const Person = mongoose.model("Person", personSchema);
+const Person = model("Person", personSchema);
 
 // const person = new Person({
 //   name: "css is easy",
@@ -30,5 +30,5 @@ Person.find({}).then((result) => {
     result.forEach((person) => {
         console.log(person);
     });
-    mongoose.connection.close();
+    connection.close();
 });
