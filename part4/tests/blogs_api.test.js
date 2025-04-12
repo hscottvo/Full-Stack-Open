@@ -52,6 +52,23 @@ test("a valid blog can be added ", async () => {
     assert(names.includes("fourth book"))
 })
 
+test("a blog created without likes defaults to 0 like", async () => {
+    const newBlog = {
+        title: "fifth book",
+        author: "perhaps scott",
+        url: "a.com",
+    }
+
+    const returnedBlog = await api
+        .post("/api/blogs")
+        .send(newBlog)
+        .expect(201)
+        .expect("Content-Type", /application\/json/)
+
+    assert.strictEqual(returnedBlog._body.likes, 0)
+
+})
+
 test("a blog without a title is not added", async () => {
     const newBlog = {
         author: "definitely scott",
@@ -103,23 +120,6 @@ test("a blog without a url is not added", async () => {
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })
 
-test("a blog without likes is not added", async () => {
-    const newBlog = {
-        title: "fourth book",
-        author: "definitely scott",
-        url: "ddg.com",
-    }
-
-    await api
-        .post("/api/blogs")
-        .send(newBlog)
-        .expect(400)
-
-    const blogsAtEnd = await helper.blogsInDb()
-
-    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
-})
-
 test("a specific blog can be viewed", async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToView = blogsAtStart[0]
@@ -156,6 +156,7 @@ test("blogs have an 'id' field rather than a '_id' field", async () => {
         assert(!blogFields.includes("_id"))
     })
 })
+
 
 after(async () => {
     await mongoose.connection.close()
