@@ -177,7 +177,59 @@ describe("blogs test", () => {
             assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
         })
     })
+
+    describe("update blogs", () => {
+        test("update an existing blog", async () => {
+            const blogsAtStart = await helper.blogsInDb()
+            const updateId = blogsAtStart[0].id
+
+            const newBlog = {
+                title: "test_title",
+                author: "test_author",
+                url: "test_url",
+                likes: 100
+            }
+
+            const returnedBlog = await api
+                .put(`/api/blogs/${updateId}`)
+                .send(newBlog)
+                .expect(200)
+
+            delete returnedBlog.body.id
+
+            assert.deepStrictEqual(newBlog, returnedBlog.body)
+
+        })
+        test("try updating a non-existing blog", async () => {
+            const newBlog = {
+                title: "test_title",
+                author: "test_author",
+                url: "test_url",
+                likes: 100
+            }
+
+            await api
+                .put("/api/blogs/000000000000000000000000")
+                .send(newBlog)
+                .expect(404)
+        })
+        test("try updating a blog with a bad id", async () => {
+            const newBlog = {
+                title: "test_title",
+                author: "test_author",
+                url: "test_url",
+                likes: 100
+            }
+
+            await api
+                .put("/api/blogs/0")
+                .send(newBlog)
+                .expect(400)
+        })
+    })
+
 })
+// })
 
 
 

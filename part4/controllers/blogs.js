@@ -43,6 +43,9 @@ blogsRouter.put("/:id", async (req, res) => {
     blog.author = author
     blog.url = url
     blog.likes = likes
+
+    const returnedBlog = await blog.save()
+    res.json(returnedBlog)
 })
 
 export default blogsRouter
