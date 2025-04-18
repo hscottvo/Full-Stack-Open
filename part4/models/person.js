@@ -12,7 +12,11 @@ const personSchema = new mongoose.Schema({
         minLength: 8,
         required: true,
         validate: [/\d{2,3}-\d+/, "2-3 digits, followed by a hyphen, then 5 or more digits"]
-    }
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
 })
 
 personSchema.set("toJSON", {
