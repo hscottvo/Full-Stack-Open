@@ -1,12 +1,12 @@
-import axios from "axios"
-const countryUrl = "https://studies.cs.helsinki.fi/restcountries/api"
-const weatherUrl = "https://api.open-meteo.com/v1/forecast"
+import axios from 'axios'
+const countryUrl = 'https://studies.cs.helsinki.fi/restcountries/api'
+const weatherUrl = 'https://api.open-meteo.com/v1/forecast'
 
 const getAll = () => {
     return axios
         .get(`${countryUrl}/all`)
-        .then(response => response.data)
-        .catch(err => alert(`Failed to fetch country data: ${err}`))
+        .then((response) => response.data)
+        .catch((err) => alert(`Failed to fetch country data: ${err}`))
 }
 
 const getWeather = (lat, long) => {
@@ -17,14 +17,14 @@ const getWeather = (lat, long) => {
             params: {
                 latitude: lat,
                 longitude: long,
-                current: "temperature_2m,wind_speed_10m",
+                current: 'temperature_2m,wind_speed_10m',
                 start_date: date,
                 end_date: date,
-                temperature_unit: "fahrenheit"
-            }
+                temperature_unit: 'fahrenheit',
+            },
         })
-        .then(response => response.data)
-        .catch(err => alert(`Failed to fetch country data: ${err}`))
+        .then((response) => response.data)
+        .catch((err) => alert(`Failed to fetch country data: ${err}`))
 }
 
 export default { getAll, getWeather }

@@ -1,9 +1,9 @@
 {
-  "persons": [
-    {
-      "id": "9a70",
-      "name": "arst",
-      "number": "1"
-    }
-  ]
+    "persons": [
+        {
+            "id": "9a70",
+            "name": "arst",
+            "number": "1"
+        }
+    ]
 }

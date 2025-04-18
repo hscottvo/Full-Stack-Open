@@ -1,4 +1,4 @@
-import _ from "lodash"
+import _ from 'lodash'
 const dummy = () => {
     return 1
 }
@@ -19,8 +19,7 @@ const favoriteBlog = (blogList) => {
 
         if (acc.likes < val.likes) {
             return val
-        }
-        else {
+        } else {
             return acc
         }
     }
@@ -33,8 +32,8 @@ const mostBlogs = (blogList) => {
         return undefined
     }
 
-    const counts = _.countBy(blogList, object => object.author)
-    const mostBlogsAuthor = _.maxBy(Object.keys(counts), key => counts[key])
+    const counts = _.countBy(blogList, (object) => object.author)
+    const mostBlogsAuthor = _.maxBy(Object.keys(counts), (key) => counts[key])
     return { author: mostBlogsAuthor, blogs: counts[mostBlogsAuthor] }
 }
 
@@ -43,17 +42,24 @@ const mostLikes = (blogList) => {
         return undefined
     }
 
+    const group = _.groupBy(blogList, (obj) => obj.author)
 
-    const group = _.groupBy(blogList, obj => obj.author)
+    const counts = _.reduce(
+        group,
+        (res, val, key) => {
+            res[key] = _.reduce(
+                val,
+                (sum, blog) => {
+                    return sum + blog.likes
+                },
+                0
+            )
+            return res
+        },
+        {}
+    )
 
-    const counts = _.reduce(group, (res, val, key) => {
-        res[key] = _.reduce(val, (sum, blog) => {
-            return sum + blog.likes
-        }, 0)
-        return res
-    }, {})
-
-    const mostLikesAuthor = _.maxBy(Object.keys(counts), key => counts[key])
+    const mostLikesAuthor = _.maxBy(Object.keys(counts), (key) => counts[key])
     return { author: mostLikesAuthor, likes: counts[mostLikesAuthor] }
 }
 

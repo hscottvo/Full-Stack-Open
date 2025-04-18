@@ -1,6 +1,6 @@
-import axios from "axios"
+import axios from 'axios'
 // const baseUrl = "http://localhost:3001/api/persons"
-const baseUrl = "/api/persons"
+const baseUrl = '/api/persons'
 
 const getAll = () => {
     return axios
@@ -19,7 +19,7 @@ const createNumber = (newObject) => {
             const confirmString = `Number for ${newObject.name} already exists. Replace number with ${newObject.number}?`
             if (window.confirm(confirmString)) {
                 const oldObject = getAllResponse.filter(
-                    (obj) => obj.name === newObject.name,
+                    (obj) => obj.name === newObject.name
                 )[0]
                 newObject = { ...newObject, id: oldObject.id }
                 return axios
@@ -29,14 +29,16 @@ const createNumber = (newObject) => {
                 return null
             }
         } else {
-            return axios.post(baseUrl, newObject).then((response) => response.data)
+            return axios
+                .post(baseUrl, newObject)
+                .then((response) => response.data)
         }
     })
 }
 
 const deleteNumber = (id, name, handler) => {
     return axios.delete(`${baseUrl}/${id}`).catch((_) => {
-        handler(name, "alreadyDeleted")
+        handler(name, 'alreadyDeleted')
     })
 }
 

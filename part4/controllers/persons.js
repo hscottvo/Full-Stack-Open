@@ -1,46 +1,45 @@
-import Router from "express"
+import Router from 'express'
 
 const personsRouter = Router()
 
-import { Person } from "../models/person.js"
+import { Person } from '../models/person.js'
 
-personsRouter.get("/", async (_, response) => {
+personsRouter.get('/', async (_, response) => {
     const persons = await Person.find({})
     response.json(persons)
 })
 
-personsRouter.get("/:id", async (request, response) => {
+personsRouter.get('/:id', async (request, response) => {
     const person = await Person.findById(request.params.id)
     if (person) {
         response.json(person)
-    }
-    else {
+    } else {
         response.status(404).end()
     }
 })
 
-personsRouter.post("/", async (request, response) => {
+personsRouter.post('/', async (request, response) => {
     const { name, number } = request.body
 
     const person = new Person({
         name: name,
-        number: number
+        number: number,
     })
 
     const savedPerson = await person.save()
     response.status(201).json(savedPerson)
 })
 
-personsRouter.delete("/:id", async (request, response) => {
+personsRouter.delete('/:id', async (request, response) => {
     await Person.findByIdAndDelete(request.params.id)
     response.status(204).end()
 })
 
-personsRouter.put("/:id", (request, response, next) => {
+personsRouter.put('/:id', (request, response, next) => {
     const { name, number } = request.body
 
     Person.findById(request.params.id)
-        .then(person => {
+        .then((person) => {
             if (!person) {
                 return response.status(404).end()
             }
@@ -52,7 +51,7 @@ personsRouter.put("/:id", (request, response, next) => {
                 response.json(updatedPerson)
             })
         })
-        .catch(error => next(error))
+        .catch((error) => next(error))
 })
 
 export default personsRouter

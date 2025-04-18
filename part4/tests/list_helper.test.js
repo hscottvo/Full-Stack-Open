@@ -1,8 +1,8 @@
-import { test, describe } from "node:test"
-import assert from "node:assert"
-import listHelper from "../utils/list_helper.js"
+import { test, describe } from 'node:test'
+import assert from 'node:assert'
+import listHelper from '../utils/list_helper.js'
 
-test("dummy returns one", () => {
+test('dummy returns one', () => {
     const blogs = []
     const result = listHelper.dummy(blogs)
 
@@ -17,8 +17,8 @@ const listWithOneBlog = [
         author: 'Edsger W. Dijkstra',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 5,
-        __v: 0
-    }
+        __v: 0,
+    },
 ]
 
 const listWithFourBlogs = [
@@ -28,7 +28,7 @@ const listWithFourBlogs = [
         author: 'Edsger W. Dijkstra',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 1,
-        __v: 0
+        __v: 0,
     },
     {
         _id: '5a422aa71b54a676234d17f8',
@@ -36,7 +36,7 @@ const listWithFourBlogs = [
         author: 'Edsger W. Dijkstra',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 11,
-        __v: 0
+        __v: 0,
     },
     {
         _id: '5a422aa71b54a676234d17f8',
@@ -44,7 +44,7 @@ const listWithFourBlogs = [
         author: 'me',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 5,
-        __v: 0
+        __v: 0,
     },
     {
         _id: 'ietrsnietnrsietr',
@@ -52,81 +52,87 @@ const listWithFourBlogs = [
         author: 'you',
         url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
         likes: 11,
-        __v: 0
-    }
+        __v: 0,
+    },
 ]
 
-describe("total likes", () => {
-
-    test("when list is empty, equals 0", () => {
+describe('total likes', () => {
+    test('when list is empty, equals 0', () => {
         const result = listHelper.totalLikes(emptyList)
         assert.strictEqual(result, 0)
     })
 
-    test("when list has only one blog, equals the likes of that blog", () => {
+    test('when list has only one blog, equals the likes of that blog', () => {
         const result = listHelper.totalLikes(listWithOneBlog)
         assert.strictEqual(result, 5)
     })
 
-    test("when list has multiple blogs, equals the likes of those blogs", () => {
+    test('when list has multiple blogs, equals the likes of those blogs', () => {
         const result = listHelper.totalLikes(listWithFourBlogs)
         assert.strictEqual(result, 28)
     })
 })
 
-describe("favorite blog", () => {
-
-    test("when list is empty, equals undefined", () => {
+describe('favorite blog', () => {
+    test('when list is empty, equals undefined', () => {
         const result = listHelper.favoriteBlog(emptyList)
 
         assert.deepStrictEqual(result, undefined)
     })
 
-    test("when list has only one blog, equals that blog", () => {
+    test('when list has only one blog, equals that blog', () => {
         const result = listHelper.favoriteBlog(listWithOneBlog)
         assert.deepStrictEqual(result, listWithOneBlog[0])
     })
 
-    test("when list has multiple blogs, equals the first most-liked blog", () => {
+    test('when list has multiple blogs, equals the first most-liked blog', () => {
         const result = listHelper.favoriteBlog(listWithFourBlogs)
         assert.deepStrictEqual(result, listWithFourBlogs[1])
     })
 })
 
-describe("author with most blogs", () => {
-
-    test("when list is empty, return undefined", () => {
+describe('author with most blogs', () => {
+    test('when list is empty, return undefined', () => {
         const result = listHelper.mostBlogs(emptyList)
         assert.deepStrictEqual(result, undefined)
     })
 
     test("when list has only one blog, equals that blog's blogger", () => {
         const result = listHelper.mostBlogs(listWithOneBlog)
-        assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", blogs: 1 })
+        assert.deepStrictEqual(result, {
+            author: 'Edsger W. Dijkstra',
+            blogs: 1,
+        })
     })
 
-    test("when list has multiple blogs, equals any of the top-bloggers", () => {
+    test('when list has multiple blogs, equals any of the top-bloggers', () => {
         const result = listHelper.mostBlogs(listWithFourBlogs)
-        assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", blogs: 2 })
+        assert.deepStrictEqual(result, {
+            author: 'Edsger W. Dijkstra',
+            blogs: 2,
+        })
     })
-
 })
 
-describe("author with most likes", () => {
-
-    test("when list is empty return undefined", () => {
+describe('author with most likes', () => {
+    test('when list is empty return undefined', () => {
         const result = listHelper.mostLikes(emptyList)
         assert.deepStrictEqual(result, undefined)
     })
 
-    test("when list has only one blog, equals that blog like", () => {
+    test('when list has only one blog, equals that blog like', () => {
         const result = listHelper.mostLikes(listWithOneBlog)
-        assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 5 })
+        assert.deepStrictEqual(result, {
+            author: 'Edsger W. Dijkstra',
+            likes: 5,
+        })
     })
 
-    test("when list has multiple blogs, equals the the author and likes of any of the top-liked authors", () => {
+    test('when list has multiple blogs, equals the the author and likes of any of the top-liked authors', () => {
         const result = listHelper.mostLikes(listWithFourBlogs)
-        assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 12 })
+        assert.deepStrictEqual(result, {
+            author: 'Edsger W. Dijkstra',
+            likes: 12,
+        })
     })
-
 })
