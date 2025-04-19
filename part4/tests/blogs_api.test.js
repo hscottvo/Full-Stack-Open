@@ -29,7 +29,7 @@ describe('blogs test', () => {
                 .expect('Content-Type', /application\/json/)
         })
 
-        test('there are 2 notes', async () => {
+        test('there are 2 blogs', async () => {
             const response = await api.get('/api/blogs')
             assert.strictEqual(response.body.length, helper.initialBlogs.length)
         })
@@ -211,7 +211,6 @@ describe('blogs test', () => {
         })
     })
 })
-// })
 
 after(async () => {
     await mongoose.connection.close()

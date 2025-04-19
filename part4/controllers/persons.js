@@ -3,6 +3,7 @@ import Router from 'express'
 const personsRouter = Router()
 
 import { Person } from '../models/person.js'
+import { User } from '../models/user.js'
 
 personsRouter.get('/', async (_, response) => {
     const persons = await Person.find({})
@@ -18,15 +19,25 @@ personsRouter.get('/:id', async (request, response) => {
     }
 })
 
-personsRouter.post('/', async (request, response) => {
-    const { name, number } = request.body
+personsRouter.post('/', async (request, response, next) => {
+    const { name, number, userId } = request.body
+
+    if (!userId) {
+        response.status(404).end()
+    }
+
+    const user = await User.findById(userId)
 
     const person = new Person({
         name: name,
         number: number,
+        user: user.id,
     })
 
     const savedPerson = await person.save()
+    user.persons = user.persons.concat(savedPerson._id)
+    await user.save()
+
     response.status(201).json(savedPerson)
 })
 
