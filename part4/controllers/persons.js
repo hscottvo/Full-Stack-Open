@@ -31,7 +31,7 @@ const getTokenFrom = (req) => {
 personsRouter.post('/', async (request, response) => {
     const { name, number } = request.body
     const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-    if (!decodedToken.id) {
+    if (!decodedToken?.id) {
         return response.status(401).json({ error: 'token invalid' })
     }
 

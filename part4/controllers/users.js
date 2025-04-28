@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
-import express from 'express'
+import Router from 'express'
 import { User } from '../models/user.js'
 
-const usersRouter = express.Router()
+const usersRouter = Router()
 
 usersRouter.get('/', async (_req, res) => {
     const allUsers = await User.find({}).populate('persons').populate('blogs')
@@ -36,6 +36,11 @@ usersRouter.post('/', async (req, res) => {
     const savedUser = await user.save()
 
     res.status(201).json(savedUser)
+})
+
+usersRouter.delete('/', async (_req, res) => {
+    await User.deleteMany()
+    res.status(204).end()
 })
 
 export default usersRouter

@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    name: String,
+    name: { type: String, required: true },
     passwordHash: String,
     persons: [
         {
@@ -25,9 +25,11 @@ const userSchema = new mongoose.Schema({
 userSchema.set('toJSON', {
     transform: (_document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
+        console.log(returnedObject)
         delete returnedObject._id
         delete returnedObject.__v
         delete returnedObject.passwordHash
+        // delete returnedObject.persons
     },
 })
 
