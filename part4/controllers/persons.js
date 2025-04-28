@@ -1,4 +1,5 @@
 import Router from 'express'
+import jwt from 'jsonwebtoken'
 
 const personsRouter = Router()
 
@@ -19,14 +20,22 @@ personsRouter.get('/:id', async (request, response) => {
     }
 })
 
-personsRouter.post('/', async (request, response, next) => {
-    const { name, number, userId } = request.body
+const getTokenFrom = (req) => {
+    const authorization = req.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    return null
+}
 
-    if (!userId) {
-        response.status(404).end()
+personsRouter.post('/', async (request, response) => {
+    const { name, number } = request.body
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken.id) {
+        return response.status(401).json({ error: 'token invalid' })
     }
 
-    const user = await User.findById(userId)
+    const user = await User.findById(decodedToken.id)
 
     const person = new Person({
         name: name,

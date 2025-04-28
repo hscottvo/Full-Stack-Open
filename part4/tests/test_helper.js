@@ -31,14 +31,6 @@ const initialBlogs = [
     },
 ]
 
-const initialUsers = [
-    {
-        username: 'root',
-        name: 'root-name',
-        password: '12345',
-    },
-]
-
 const personNonExistingId = async () => {
     const person = new Person({
         name: 'howdy',
@@ -77,35 +69,12 @@ const usersInDb = async () => {
     return users.map((user) => user.toJSON())
 }
 
-const resetUsersTable = async () => {
-    await User.deleteMany({})
-
-    const userPromiseArray = initialUsers.map(async (user) => {
-        const passwordHash = await bcrypt.hash(user.password, 10)
-        const newUser = new User({
-            username: user.username,
-            name: user.name,
-            passwordHash,
-        })
-        return newUser
-    })
-
-    let users = await Promise.all(userPromiseArray)
-
-    const savePromiseArray = users.map((user) => {
-        user.save()
-    })
-    await Promise.all(savePromiseArray)
-}
-
 export default {
     initialPersons,
     initialBlogs,
-    initialUsers,
     personNonExistingId,
     blogNonExistingId,
     personsInDb,
     blogsInDb,
     usersInDb,
-    resetUsersTable,
 }
