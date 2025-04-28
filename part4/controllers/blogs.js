@@ -1,7 +1,6 @@
 import Router from 'express'
-import jwt from 'jsonwebtoken'
 import { Blog } from '../models/blogs.js'
-import { User } from '../models/user.js'
+import middleware from '../utils/middleware.js'
 
 const blogsRouter = Router()
 
@@ -19,14 +18,10 @@ blogsRouter.get('/:id', async (req, res) => {
     }
 })
 
-blogsRouter.post('/', async (req, res) => {
+blogsRouter.post('/', middleware.userExtractor, async (req, res) => {
     const { title, author, url, likes } = req.body
-    const decodedToken = jwt.decode(req.token, process.env.SECRET)
-    if (!decodedToken?.id) {
-        return res.status(401).json({ error: 'token invalid' })
-    }
 
-    const user = await User.findById(decodedToken.id)
+    const user = req.user
 
     const blog = new Blog({ title, author, url, likes, user: user.id })
 
@@ -43,14 +38,15 @@ blogsRouter.delete('/', async (_req, res) => {
     res.status(204).end()
 })
 
-blogsRouter.delete('/:id', async (req, res) => {
-    const decodedToken = jwt.decode(req.token, process.env.SECRET)
-    if (!decodedToken?.id) {
-        return res.status(401).json({ error: 'token invalid' })
+blogsRouter.delete('/:id', middleware.userExtractor, async (req, res) => {
+    const user = req.user
+    if (!user) {
+        res.status(401).json({ error: 'invalid token' }).end()
     }
-
-    const user = await User.findById(decodedToken.id)
     const blogToDelete = await Blog.findById(req.params.id)
+    if (!blogToDelete) {
+        res.status(404).end()
+    }
     if (!(String(user._id) === String(blogToDelete.user))) {
         res.status(401)
             .json({ error: 'user does not match owner of blog' })

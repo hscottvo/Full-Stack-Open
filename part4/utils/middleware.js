@@ -1,4 +1,6 @@
+import jwt from 'jsonwebtoken'
 import logger from './logger.js'
+import { User } from '../models/user.js'
 
 const requestLogger = (request, response, next) => {
     logger.info('Method:', request.method)
@@ -43,9 +45,20 @@ const tokenExtractor = (request, _, next) => {
     next()
 }
 
+const userExtractor = async (request, response, next) => {
+    const decodedToken = jwt.decode(request.token, process.env.SECRET)
+    if (!decodedToken?.id) {
+        return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+    request.user = user
+    next()
+}
+
 export default {
     requestLogger,
     unknownEndpoint,
     errorHandler,
     tokenExtractor,
+    userExtractor,
 }
