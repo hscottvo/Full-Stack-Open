@@ -20,17 +20,9 @@ personsRouter.get('/:id', async (request, response) => {
     }
 })
 
-const getTokenFrom = (req) => {
-    const authorization = req.get('authorization')
-    if (authorization && authorization.startsWith('Bearer ')) {
-        return authorization.replace('Bearer ', '')
-    }
-    return null
-}
-
 personsRouter.post('/', async (request, response) => {
     const { name, number } = request.body
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!decodedToken?.id) {
         return response.status(401).json({ error: 'token invalid' })
     }
