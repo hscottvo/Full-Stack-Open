@@ -3,10 +3,9 @@ import express from 'express'
 import { User } from '../models/user.js'
 
 const usersRouter = express.Router()
-// import { usersInDb } from '../tests/test_helper.js'
 
 usersRouter.get('/', async (_req, res) => {
-    const allUsers = await User.find({}).populate('persons')
+    const allUsers = await User.find({}).populate('persons').populate('blogs')
     res.json(allUsers)
 })
 

@@ -1,12 +1,12 @@
 import Router from 'express'
 import { Blog } from '../models/blogs.js'
+import { User } from '../models/user.js'
 
 const blogsRouter = Router()
 
-blogsRouter.get('/', (_, res) => {
-    Blog.find({}).then((blogs) => {
-        res.json(blogs)
-    })
+blogsRouter.get('/', async (_, res) => {
+    const allBlogs = await Blog.find({}).populate('user')
+    res.json(allBlogs)
 })
 
 blogsRouter.get('/:id', async (req, res) => {
@@ -19,10 +19,23 @@ blogsRouter.get('/:id', async (req, res) => {
 })
 
 blogsRouter.post('/', async (req, res) => {
-    const blog = new Blog(req.body)
+    const { title, author, url, likes } = req.body
+
+    const firstUser = await User.findOne({})
+
+    const blog = new Blog({ title, author, url, likes, user: firstUser.id })
 
     const savedBlog = await blog.save()
+    firstUser.blogs = firstUser.blogs.concat(savedBlog._id)
+
+    await firstUser.save()
+
     res.status(201).json(savedBlog)
+})
+
+blogsRouter.delete('/', async (_req, res) => {
+    await Blog.deleteMany()
+    res.status(204).end()
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
